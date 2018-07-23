@@ -104,6 +104,8 @@ static struct retro_input_descriptor descWiimote[] = {
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A, "A"},
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X, "1"},
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y, "2"},
+    {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L, "Tilt Left" },
+    {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R, "Tilt Right" },
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2, "Shake Wiimote"},
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START, "+"},
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "-"},
@@ -120,6 +122,8 @@ static struct retro_input_descriptor descWiimoteSideways[] = {
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A, "2"},
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X, "A"},
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y, "B"},
+    {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L, "Tilt Left" },
+    {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R, "Tilt Right" },
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2, "Shake Wiimote"},
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START, "+"},
     {0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "-"},
@@ -590,10 +594,18 @@ void retro_set_controller_port_device(unsigned port, unsigned device)
       }
       else
       {
-        wmButtons->SetControlExpression(2, "X");       // 1
-        wmButtons->SetControlExpression(3, "Y");       // 2
+        ControllerEmu::ControlGroup* wmTilt = wm->GetWiimoteGroup(WiimoteGroup::Tilt);
+
+        wmButtons->SetControlExpression(0, "Y");       // B
+        wmButtons->SetControlExpression(1, "X");       // A
+        wmButtons->SetControlExpression(2, "B");       // 1
+        wmButtons->SetControlExpression(3, "A");       // 2
         wmButtons->SetControlExpression(4, "Select");  // -
         wmButtons->SetControlExpression(5, "Start");   // +
+        wmTilt->SetControlExpression(1, "L");
+        wmTilt->SetControlExpression(2, "L");
+        wmTilt->SetControlExpression(3, "R");
+
       }
 
       wmButtons->SetControlExpression(6, "R3");                   // Home
